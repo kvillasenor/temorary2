@@ -1,12 +1,228 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
+    <meta charset="UTF-8">
+    <title>Valentine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url("heart.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            
+        }
+
+        #envelope-container{
+            text-align: center;
+            cursor: pointer;
+            color:  rgb(255, 255, 255);
+            font-weight: 900;
+            -webkit-text-stroke: 1px rgb(52, 3, 3);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform:scale(1);
+            }
+            50%{
+                transform: scale(1.1);
+            }
+            100%{
+                transform: scale(1);
+            }
+        }
+
+        #envelope{
+            width: 200px;
+            animation: pulse 1.5s infinite;
+            cursor: pointer;
+        }
+
+        #letter-container{
+            display: none;
+            position: fixed;
+            inset: 0;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .letter-window{
+            width: 90vw;
+            max-width: 800px;
+            aspect-ratio: 3/2;
+            padding: 20px 20px 0 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-image: url("window.webp");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 12px;
+            gap: 1px;
+            padding-top: 180px;
+
+            transform: scale(1.2);
+            opacity: 0;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+
+        }
+
+        .letter-window.open {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin: 0;
+        }
+
+        p {
+            font-size: 40px;
+        }
+
+        .duck {
+            width: 250px;
+            margin: 10px 0;
+            transition: width 0.4s ease;
+        }
+
+        .letter-window.final .duck{
+            width: 180px;
+        }
+
+        .buttons{
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            position: relative;
+        }
+
+        .no-wrapper{
+            position: relative;
+        }
+
+        .btn{
+            width: 120px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .yes-btn, .no-btn{
+            width: 120px;
+            height: auto;
+            display: inline-block;
+        }
+
+        .yes-btn{
+            position: relative;
+            z-index: 2;
+            transform-origin: center center;
+            transition: transform 0.3s ease;
+        }
+
+        .no-btn{
+            z-index: 1;
+            position: relative;
+            transition:  transform 0.15s ease;
+            cursor: default;
+        }
+
+        .final-text{
+            font-size: 22px;
+            line-height: 1.4;
+            text-align: center;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: rgba(255,240,240,.5);
+            border-radius:  12px;
+        }
+    </style>
 </head>
 <body>
+    <div id="envelope-container">
+        <img src="envelope.webp" alt="Envelope" id="envelope" />
+        <p> For you (Click the Letter) </p>
+    </div>
 
-<h1>This is a Heading</h1>
-<p>This is a paragraph.</p>
+    <div id="letter-container">
+        <div class="letter-window">
+            <h1 id="letter-title">Will you be my Valentine?</h1>
+            
+            <img src="duck.gif" class="duck" id="letter-duck" />
 
+            <div class="buttons" id="letter-buttons">
+                <img src="yes.png" class="btn yes-btn" alt="Yes" />
+
+                <div class="no-wrapper">
+                    <img src="no.png" class="btn no-btn" alt="No" />
+
+                </div>
+            </div>
+            <p id="final-text" class="final-text" style="display: none">
+                <strong>Valentine Date:</strong> February 14th, Kyuramen 🥰🍜
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Elements
+        const envelope = document.getElementById("envelope-container");
+        const letter = document.getElementById("letter-container");
+        const noBtn = document.querySelector(".no-btn");
+        const yesBtn = document.querySelector(".btn[alt='Yes']");
+
+        const title = document.getElementById("letter-title");
+        const duckImg = document.getElementById("letter-duck");
+        const buttons = document.getElementById("letter-buttons");
+        const finalText = document.getElementById("final-text");
+        
+        envelope.addEventListener("click", () => {
+            envelope.style.display = "none";
+            letter.style.display = "flex";
+
+            setTimeout( () => {
+                document.querySelector(".letter-window").classList.add("open");
+            },50);
+        });
+
+        noBtn.addEventListener("mouseover", () => {
+            const min = 200;
+            const max = 200;
+
+            const distance = Math.random() * (max - min) + min;
+            const angle = Math.random() * Math.PI * 2;
+
+            const moveX = Math.cos(angle) * distance;
+            const moveY = Math.sin(angle) * distance;
+
+            noBtn.style.transition = "transform 0.3s ease";
+            noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+
+
+        yesBtn.addEventListener("click", () => {
+            title.textContent = "YAYYY";
+
+            duckImg.src = "confetti.gif";
+
+            document.querySelector(".letter-window").classList.add("final");
+
+            buttons.style.display = "none";
+
+            finalText.style.display = "block";
+        });
+    
+
+    </script>
 </body>
 </html>
